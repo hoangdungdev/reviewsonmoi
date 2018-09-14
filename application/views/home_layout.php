@@ -114,7 +114,11 @@
                         <div class="col-md-4 col-sm-4 col-xs-12">
                             <div class="footer-box2">
                                 <h2 class="title18 font-bold color">Thuốc mọc mi Nutraluxe Lash MD</h2>
-                                <p class="desc white">Excellence in quality and service is the hallmark of all operations performed at Fruit. Firmly standing by its business values, Fruit is active in manufacture and sale of textile </p>
+                                <p class="desc white"><i class="fa fa-check" aria-hidden="true"></i> Là nhà phân phối Nutra Luxe Lash MD chính hãng tại Việt Nam</p>
+                                <p class="desc white"><i class="fa fa-check" aria-hidden="true"></i> Đối tác tin cậy của nhà sản xuất hàng đầu tại Mỹ.</p>
+                                <p class="desc white"><i class="fa fa-check" aria-hidden="true"></i> Có giấy chứng nhận lưu hành của Bộ Y Tế.</p>
+                                <p class="desc white"><i class="fa fa-check" aria-hidden="true"></i> Cam kết <strong class="color">100%</strong> hàng chính hãng.</p>
+                                <p class="desc white"><i class="fa fa-check" aria-hidden="true"></i> Nutra Luxe Lash MD được chiết xuất tự nhiên, đảm bảo độ tinh khiết và an toàn cho sức khỏe.</p>
                             </div> 
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-12">
