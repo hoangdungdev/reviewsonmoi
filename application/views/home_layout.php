@@ -113,7 +113,7 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-12">
                             <div class="footer-box2">
-                                <h2 class="title18 font-bold color">Thuốc mọc mi Nutraluxe Lash MD Gi A</h2>
+                                <h2 class="title18 font-bold color">Thuốc mọc mi Nutraluxe Lash MD Gi</h2>
                                 <p class="desc white"><i class="fa fa-check" aria-hidden="true"></i> Là nhà phân phối Nutra Luxe Lash MD chính hãng tại Việt Nam</p>
                                 <p class="desc white"><i class="fa fa-check" aria-hidden="true"></i> Đối tác tin cậy của nhà sản xuất hàng đầu tại Mỹ.</p>
                                 <p class="desc white"><i class="fa fa-check" aria-hidden="true"></i> Có giấy chứng nhận lưu hành của Bộ Y Tế.</p>
