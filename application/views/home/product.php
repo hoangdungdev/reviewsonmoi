@@ -1,286 +1,246 @@
-<style>
-	.activecolor{display: block;}
-	.inactivecolor{display: none;}
-</style>
-<div class="content">
-	<div class="product-single">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3 col-sm-12 col-xs-12">
-					<div class="sidebar">
-						<div class="widget">
-                            <h4 class="title-widget"><span>Danh mục</span></h4>
-                            <div class="category-product">
-                                <ul>
-                                    <?php if (count($menu_maus) > 0): $category_model = new Category_model();?>
-                                        <?php foreach ($menu_maus as $item): $cat_id = $item->id; 
-                                            $menu_level2 = $category_model->getbyparent($cat_id);
-                                        ?>
-                                            <li class="menu_parent">
-                                                <a href="<?php echo base_url('danh-muc/'.$item->slug) ?>"><?php echo $item->name; ?></a>
-                                                <?php if (count($menu_level2) > 0): ?>
-                                                <ul class="menu_child">
-                                                    <?php foreach ($menu_level2 as $item2): ?>
-                                                        <li>
-                                                            <a href="<?php echo base_url('danh-muc/'.$item2->slug) ?>">
-                                                                <i class="fa fa-long-arrow-right"></i> <?php echo $item2->name; ?></a>
-                                                        </li>
-                                                    <?php endforeach ?>
-                                                </ul>
-                                                <?php endif ?>
+<div class="banner-slider-page banner-slider">
+    <div class="wrap-item" data-pagination="false" data-itemscustom="[[0,1]]">
+        <div class="item-slider item-slider-shop">
+            <div class="banner-thumb"><a href="#" class="adv-thumb-link"><img src="<?php echo base_url(); ?>public/images/blog/banner-blog-list.jpg" alt="" /></a></div>
+            <div class="banner-info">
+                <div class="container">
+                    <h2 class="title18 white text-uppercase font-bold">Liên hệ</h2>
+                    <div class="bread-crumb white"><a href="<?php echo base_url(); ?>" class="white">Trang chủ</a><span>Liên hệ</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="content-shop">
+        <div class="row">
+            <div class="col-md-9 col-sm-8 col-xs-12">
+                <div class="product-detail">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-gallery">
+                                <div class="mid">
+                                    <img src="<?php echo base_url('upload/product/home/'.$products_detail->image); ?>" alt="<?php echo $products_detail->name; ?>"/>
+                                </div>
+                                <div class="gallery-control">
+                                    <div class="carousel">
+                                        <ul class="list-none">
+                                            <?php $img = json_decode($products_detail->list_img);?>
+                                            <?php if (!empty($img) && count($img)>0): ?>
+                                                <?php foreach ($img as $i=> $item_img): ?>
+                                                <li><a href="#" class="<?php echo ($i == 0) ? 'active' : ''; ?>"><img src="<?php echo base_url('upload/product/show/'.$item_img); ?>" alt="<?php echo 'Hình ảnh: '.$products_detail->name.' '.$i.$i; ?>"/></a></li>
+                                                <?php endforeach ?>  
+                                            <?php endif ?>
+                                        </ul>
+                                    </div>
+                                    <a href="#" class="prev"></a>
+                                    <a href="#" class="next"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-info">
+                                <h2 class="title30 font-bold"><?php echo $products_detail->name; ?></h2>
+                                <div class="product-price">
+                                    <?php if ($products_detail->sale == 1) { ?>
+                                        <del class="silver"><span><?php echo $this->cart->format_number_custom($products_detail->price); ?> đ</span></del>
+                                        <ins class="color"><span><?php echo $this->cart->format_number_custom($products_detail->price_sale); ?> đ</span></ins>
+                                    <?php } else { ?>    
+                                        <ins class="color"><span><?php echo $this->cart->format_number_custom($products_detail->price); ?> đ</span></ins>
+                                    <?php } ?>
+                                </div>
+                                <div class="product-rate">
+                                    <div class="product-rating" style="width:100%"></div>
+                                </div>
+                                <p class="desc"><?php echo word_limiter($products_detail->description,100); ?></p>
+                                <ul class="list-inline-block wrap-qty-extra">
+                                    <li>
+                                        <div class="detail-qty">
+                                            <a href="#" class="qty-down silver"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
+                                            <span class="qty-val">1</span>
+                                            <a href="#" class="qty-up silver"><i class="fa fa-arrow-circle-up" aria-hidden="true"></i></a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="product-extra-link">
+                                            <a href="#" class="addcart-link"><i class="fa fa-cart-plus" aria-hidden="true"></i> Đặt Mua Hàng</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <p class="desc info-extra">
+                                    <label>Danh Mục:</label><a href="<?php echo base_url(); ?>" class="color">Nutraluxe MD</a>
+                                </p>
+                                <p class="desc info-extra">
+                                    <label>Mã sản phẩm:</label><span class="color"><?php echo $products_detail->code; ?></span>
+                                </p>
+                                <p class="desc info-extra">
+                                    <label>Share:</label>
+                                    <a href="#" class="silver"><i class="fa fa-facebook"></i></a>
+                                    <a href="#" class="silver"><i class="fa fa-twitter"></i></a>
+                                    <a href="#" class="silver"><i class="fa fa-instagram"></i></a>
+                                </p>
+                            </div>          
+                        </div>
+                    </div>
+                </div>
+                <!-- End Product Detail -->
+                <div class="detail-tabs">
+                    <div class="title-tab-detail">
+                        <ul class="title-tab1 list-inline-block">
+                            <li class="active"><a href="#tab1" class="title14" data-toggle="tab" aria-expanded="true">Thông tin sản phẩm</a></li>
+                            <li class=""><a href="#tab2" class="title14" data-toggle="tab" aria-expanded="false">Nhận xét</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div id="tab1" class="tab-pane active">
+                            <div class="detail-descript">
+                                <?php echo $products_detail->content; ?>
+                            </div>
+                        </div>
+                        <div id="tab2" class="tab-pane">
+                            <div class="content-tags-detail">
+                                <?php $lengthComemnt = count($comments); ?>
+                                <h3 class="title14">Có [<?php echo $lengthComemnt; ?>] nhận xét về sản phẩm</h3>
+                                <ul class="list-none list-tags-review">
+                                    <?php if ($lengthComemnt > 0): ?>
+                                        <?php foreach ($comments as $item): ?>
+                                            <li>
+                                                <div class="review-author">
+                                                    <?php if (!empty($item->image)) { ?>
+                                                        <img src="<?php echo $item->image; ?>" alt="Khách hàng <?php echo $item->name; ?>" class='img-circle' width='79'>
+                                                    <?php } else { ?>
+                                                        <img src="<?php echo base_url('public/images/client.png') ?>" alt="Khách hàng <?php echo $item->name; ?>">
+                                                    <?php } ?>
+                                                </div>
+                                                <div class="review-info">
+                                                    <p class="review-header"><strong><?php echo $item->name; ?></strong> – <?php echo $item->created; ?></p>
+                                                    <div class="product-rate">
+                                                        <div class="product-rating" style="width:100%"></div>
+                                                    </div>
+                                                    <p class="desc"><?php echo $item->content ?></p>
+                                                </div>
                                             </li>
                                         <?php endforeach ?>
                                     <?php endif ?>
                                 </ul>
+                                <div class="add-review-form">
+                                    <h3 class="title14">Bạn cần tư vấn hoặc nhận xét về sản phẩm. Hãy để lại lời nhắn bên dưới và gửi cho Chúng tôi.</h3>
+                                    <p>Hãy điền đầy đủ thông tin phía dưới nhé *</p>
+                                    <div class="alert" id="review_info" style="display: none;"></div>
+                                    <form class="review-form" id="form-review-kh" action="<?php echo base_url('nhan-xet'); ?>" method="post">
+                                        <div>
+                                            <label>Họ tên *</label>
+                                            <input name="name" id="name" type="text">
+                                            <input name="id_product" id="id_product" type="hidden" value="<?php echo $products_detail->id; ?>">
+                                            <input name="name_product" id="name_product" type="hidden" value="<?php echo $products_detail->name; ?>">
+                                        </div>
+                                        <div>
+                                            <label>Email *</label>
+                                            <input name="email" id="email" type="text">
+                                        </div>
+                                        <div>
+                                            <label>Điểm Rating</label>
+                                            <div style="height:  40px;line-height:  40px;">
+                                                <input type="radio" class="rating" value="1" name="rating">
+                                                <label for="shipping_method_0_free_shipping">1</label>
+                                                <input type="radio" class="rating" value="2" name="rating">
+                                                <label for="shipping_method_0_free_shipping">2</label>
+                                                <input type="radio" class="rating" value="3" name="rating">
+                                                <label for="shipping_method_0_free_shipping">3</label>
+                                                <input type="radio" class="rating" value="4" name="rating">
+                                                <label for="shipping_method_0_free_shipping">4</label>
+                                                <input type="radio" class="rating" value="5" name="rating" checked="checked">
+                                                <label for="shipping_method_0_free_shipping">5</label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label>Ghi chú *</label>
+                                            <textarea name="content" id="message" cols="30" rows="10"></textarea>
+                                        </div>
+                                        <div>
+                                            <input class="shop-button radius4" value="Gửi" type="submit">
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="widget hidden-xs">
-                            <h4 class="title-widget">
-                                <span>Bạn có thể xem</span>
-                            </h4>
-                            <?php if (count($tintucs) > 0): ?>
-                                <?php foreach ($tintucs as $item): ?>
-                                    <div class="recent-post">
-                                        <div class="post-thumb">
-                                            <a href="<?php echo base_url('tin-tuc/'.$item->loaitintuc_slug.'/'.$item->slug); ?>">
-                                                <img src="<?php echo base_url('upload/tintuc/thumb/'.$item->image); ?>" alt="<?php echo $item->meta_title; ?>"/></a>
-                                        </div>
-                                        <div class="post-info">
-                                            <h4><a href="<?php echo base_url('tin-tuc/'.$item->loaitintuc_slug.'/'.$item->slug); ?>"><?php echo $item->title; ?></a></h4>
-                                            <span><?php echo $item->created; ?></span>
-                                        </div>
+                    </div>
+                </div>
+                <!-- End Tabs Detail -->
+                <div class="related-product">
+                    <h2 class="title30 font-bold">Xem thêm sản phẩm</h2>
+                    <div class="related-product-slider product-slider">
+                        <div class="wrap-item group-navi" data-navigation="true" data-pagination="false" data-itemscustom="[[0,1],[560,2],[990,3]]">
+                            <div class="item-product item-product-grid text-center">
+                                <div class="product-thumb">
+                                    <a href="detail.html" class="product-thumb-link rotate-thumb">
+                                        <img src="images/product/fruit_11.jpg" alt="">
+                                        <img src="images/product/fruit_12.jpg" alt="">
+                                    </a>
+                                    <a href="quick-view.html" class="quickview-link fancybox fancybox.iframe"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title"><a href="detail.html">Conconut Chips</a></h3>
+                                    <div class="product-price">
+                                        <ins class="color"><span>€30.000</span></ins>
                                     </div>
-                                <?php endforeach ?>
-                            <?php endif ?>
-                        </div>
-                        <div class="widget hidden-xs">
-                            <h4 class="title-widget">
-                                <span>Fanpage</span>
-                            </h4>
-                            <div class="archive">
-                                <div id="fb-root"></div>
-                                <script>(function(d, s, id) {
-                                  var js, fjs = d.getElementsByTagName(s)[0];
-                                  if (d.getElementById(id)) return;
-                                  js = d.createElement(s); js.id = id;
-                                  js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.1';
-                                  fjs.parentNode.insertBefore(js, fjs);
-                                }(document, 'script', 'facebook-jssdk'));</script>
-                                <div class="fb-page" data-href="https://www.facebook.com/AP-Collection-533582713707504/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/AP-Collection-533582713707504/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/AP-Collection-533582713707504/">A&amp;P Collection</a></blockquote></div>
+                                    <div class="product-rate">
+                                        <div class="product-rating" style="width:100%"></div>
+                                    </div>
+                                    <div class="product-extra-link">
+                                        <a href="#" class="wishlist-link"><i class="fa fa-heart-o" aria-hidden="true"></i><span>Wishlist</span></a>
+                                        <a href="#" class="addcart-link">Add to cart</a>
+                                        <a href="#" class="compare-link"><i class="fa fa-compress" aria-hidden="true"></i><span>Compare</span></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-					</div>
-				</div>
-				<div class="col-md-9 col-sm-12 col-xs-12">
-					<div class="product-single-inner">
-						<div class="row">
-							<?php if (!empty($products_detail->listmausac)) { ?>
-								<?php 
-									$list_img_color = unserialize($products_detail->listmausac);
-									$color =  $products_detail->mausac;
-									$array_color = explode(",", $color);
-								?>
-								<?php foreach ($array_color as $i => $value) { ?>
-								<div class="col-md-5 col-sm-6 col-xs-12 colorid <?php echo ($i == 0) ? 'activecolor':'inactivecolor'; ?>" id="colorid_<?php echo $value?>">
-									<div class="tab-content">
-										<?php foreach ($list_img_color[$i][$value] as $i => $item) { ?>
-										<div class="tab-pane fade <?php echo ($i == 0) ? 'active' : ''; ?>" id="<?php echo str_replace('.', '', $item); ?>">
-											<img src="<?php echo base_url('upload/product/color/'.$item); ?>"/>	
-										</div>
-										<?php } ?>
-									</div>
-									<div class="gallery-product owl-carousel owl-theme nav nav-tabs" role="tablist">
-										<?php foreach ($list_img_color[$i][$value] as $i => $item) { ?>
-											<div role="presentation" class="<?php echo ($i == 0) ? 'active' : ''; ?>"><a href="#<?php echo str_replace('.', '', $item); ?>" aria-controls="<?php echo $i; ?>" data-toggle="tab">
-												<img src="<?php echo base_url('upload/product/color/'.$item); ?>"/></a></div>
-			                            <?php } ?>  	
-									</div>
-								</div>
-								<?php } ?>
-							<?php } else { ?>
-								<div class="col-md-5 col-sm-6 col-xs-12">
-									<div class="tab-content">
-										<?php $img = json_decode($products_detail->list_img);?>
-			                            <?php if (!empty($img) && count($img)>0): ?>
-			                              	<?php foreach ($img as $i=> $item_img): ?>
-			                                <div class="tab-pane fade <?php echo ($i == 1) ? 'active' : ''; ?>" id="<?php echo $i; ?>">
-												<img src="<?php echo base_url('upload/product/show/'.$item_img); ?>" alt="<?php echo $products_detail->name.' '.$i.$i; ?>"/>	
-											</div>
-			                              	<?php endforeach ?>  
-			                            <?php endif ?>
-									</div>
-									<div class="gallery-product owl-carousel owl-theme nav nav-tabs" role="tablist">
-										<?php if (!empty($img) && count($img)>0): ?>
-			                              	<?php foreach ($img as $i=> $item_img): ?>
-											<div role="presentation" class="<?php echo ($i == 1) ? 'active' : ''; ?>"><a href="#<?php echo $i; ?>" aria-controls="<?php echo $i; ?>" data-toggle="tab">
-												<img src="<?php echo base_url('upload/product/show/min/'.$item_img); ?>"/></a></div>
-			                              	<?php endforeach ?>  
-			                            <?php endif ?>
-									</div>
-								</div>
-							<?php } ?>	
-							<div class="col-md-7 col-sm-6 col-xs-12">
-								<div class="product-details">
-									<h4><?php echo $products_detail->name; ?></h4>
-									<div class="product-rating">
-										<span class="star-rating">
-											Đánh giá:
-											<?php if (!empty($products_detail->rating)): ?>
-												<?php for ($i=1; $i <= $products_detail->rating; $i++) { ?>
-													<i class="fa fa-star"></i>
-												<?php } ?>
-											<?php endif ?>
-										</span>
-									</div>
-									<?php if ($products_detail->sale == 1) {?>									
-										<del class="price"><?php echo $this->cart->format_number_custom($products_detail->price); ?> đ</del>
-										<span class="price bold"><?php echo $this->cart->format_number_custom($products_detail->price_sale); ?> đ</span>
-									<?php } else { ?>
-										<span class="price bold"><?php echo $this->cart->format_number_custom($products_detail->price); ?> đ</span>
-									<?php } ?>
-									<p><?php echo word_limiter($products_detail->description,100); ?></p>
-									<?php if (!empty($products_detail->mausac)): ?>
-									<div class="product-quantity">
-										<p class="not-padding">Màu sắc:</p>
-										<div class="input-group">
-											<?php 
-                            					$arr_mausac = explode(",", $products_detail->mausac);
-											?>
-	                          				<?php if (count($mausacs) > 0): ?>
-	                          					<?php foreach ($mausacs as  $i => $item): 
-	                          						$active = (!empty($zcolor) && $zcolor == $item->id) ? 'active' : ((empty($zcolor) && $i == 0)?'active':'');
-	                          					?>
-	                          						<?php if (in_array($item->id, $arr_mausac)): ?>
-	                          							<span data-toggle="tooltip" data-original-title="<?php echo $item->title; ?>" class="colordp <?php echo $active;?>" dataid='<?php echo $item->id; ?>' style="background: url(<?php echo base_url('upload/mausac/thumb/'.$item->image); ?>) no-repeat center; background-size: 25px 25px;"></span>
-	                          						<?php endif ?>
-	                          					<?php endforeach ?>
-	                          				<?php endif ?>
-										</div>
-									</div>
-									<?php endif ?>
-									<?php if (!empty($products_detail->size)): ?>
-									<div class="product-quantity">
-										<p class="not-padding">Kích thước:</p>
-										<div class="input-group">
-											<?php 
-                            					$arr_size = explode(",", $products_detail->size);
-											?>
-	                          				<?php if (count($sizes) > 0): ?>
-	                          					<?php foreach ($sizes as $i => $item): 
-	                          						$active = (!empty($zsize) && $zsize == $item->id) ? 'active' : ((empty($zsize) && $i == 0)?'active':'');
-	                          					?>
-	                          						<?php if (in_array($item->id, $arr_size)): ?>
-	                          							<span class="sizedp <?php echo $active;?>" dataid='<?php echo $item->id; ?>'><?php echo $item->title; ?></span>
-	                          						<?php endif ?>
-	                          					<?php endforeach ?>
-	                          				<?php endif ?>
-										</div>
-									</div>
-									<?php endif ?>
-									<div class="product-quantity">
-										<p>Số lượng:</p>
-										<div class="input-group">
-											<span class="input-group-btn">
-												<button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]" datahref="<?php echo base_url();?>cart/add/?pid=<?php echo $products_detail->id ?>">
-													<span class="glyphicon glyphicon-minus"></span>
-												</button>
-											</span>
-											<input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
-											<span class="input-group-btn">
-												<button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]" datahref="<?php echo base_url();?>cart/add/?pid=<?php echo $products_detail->id ?>">
-													<span class="glyphicon glyphicon-plus"></span>
-												</button>
-											</span>
-										</div>
-									</div>
-									<div class="product-action-details">
-										<?php if ($products_detail->hethang == 1) { ?>
-											<a id="sp_add" href="<?php echo base_url();?>cart/add/?pid=<?php echo $products_detail->id ?>" title="Mua Hàng" class="addto">Mua Hàng</a>
-										<?php } else { ?>
-											<a href="tel:<?php echo str_replace(".","",$config['site_hotline']); ?>" title="<?php echo $config['site_hotline']; ?>" class="addto"><?php echo $config['site_hotline']; ?></a>
-										<?php } ?>
-										<a href="<?php echo base_url('lien-he'); ?>" data-toggle="tooltip" title="Liên hệ" data-original-title="Liên hệ">
-											<i class="fa fa-envelope"></i></a>
-									</div>
-									<div class="product-meta">
-										<div class="cat-product">
-											Danh mục:
-											<a href="<?php echo base_url('danh-muc/'.$products_detail->product_category_slug) ?>"><?php echo $products_detail->product_category_name ?></a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<div class="product-info">
-									<ul class="nav nav-tabs" role="tablist">
-										<li role="presentation" class="active"><a href="#desc" aria-controls="desc" data-toggle="tab">Thông tin sản phẩm</a></li>
-										<li role="presentation"><a href="#review" aria-controls="review" data-toggle="tab">Nhận xét</a></li>
-									</ul>
-									<div class="tab-content">
-										<div class="tab-pane fade active" id="desc">
-											<div class="product-description">
-												<?php echo $products_detail->content; ?>
-											</div>
-										</div>
-										<div class="tab-pane fade" id="review">
-											<div class="fb-comments" data-href="<?php echo current_url(); ?>" data-numposts="5" data-width="100%"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="related-product">
-							<div class="row">
-								<div class="col-md-12">
-									<h4 class="title-related">Sản phẩm cùng loại</h4>
-								</div>
-							</div>
-							<div class="row">
-								<div class="related-carousel owl-carousel owl-theme">
-									<?php if (count($products_lienquan) > 0): ?>
-										<?php foreach ($products_lienquan as $item): ?>
-											<div class="col-sm-12">
-												<div class="single-product">
-													<div class="product-img">
-														<?php if ($item->sale == 1): ?>
-                                                            <div class="product-label">
-                                                                <span class="sale">Sale</span>
-                                                            </div>
-                                                        <?php endif ?>
-														<div class="product-action">
-                                                            <a href="<?php echo base_url();?>cart/add/?pid=<?php echo $item->id ?>">
-                                                                <i class="fa fa-shopping-cart"></i> Mua Hàng
-                                                            </a>
-                                                        </div>
-                                                        <a href="<?php echo base_url('san-pham/'.$item->slug); ?>">
-                                                            <img src="<?php echo base_url('upload/product/home/thumb/'.$item->image); ?>"/>
-                                                        </a>
-													</div>
-													<div class="product-desc">
-														<h4 class="product-name"><a href="<?php echo base_url('san-pham/'.$item->slug); ?>"><?php echo $item->name; ?></a></h4>
-                                                        <?php if ($item->sale == 1) { ?>
-                                                            <span class="product-price">
-                                                                <del><?php echo $this->cart->format_number_custom($item->price); ?> đ</del>
-                                                                <span><?php echo $this->cart->format_number_custom($item->price_sale); ?> đ</span>
-                                                            </span>
-                                                        <?php } else { ?>    
-                                                            <span class="product-price">
-                                                                <span><?php echo $this->cart->format_number_custom($item->price); ?> đ</span>
-                                                            </span>
-                                                        <?php } ?>
-													</div>
-												</div>
-											</div>
-										<?php endforeach ?>
-									<?php endif ?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    </div>
+                </div>
+                <!-- End Related Product -->
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-12">
+                <div class="sidebar-right sidebar">
+                    <div class="widget widget-popular-post">
+                        <h2 class="title18 title-widget font-bold">Tin mới nhất</h2>
+                        <div class="wg-product-slider wg-post-slider">
+                            <div class="wrap-item group-navi" data-pagination="false" data-navigation="true" data-itemscustom="[[0,1],[560,2],[768,1]]">
+                                <div class="item">
+                                    <?php if (count($tintucs) > 0): ?>
+                                        <?php foreach ($tintucs as $item): ?>
+                                            <div class="item-pop-post table">
+                                                <div class="post-thumb banner-adv overlay-image zoom-image">
+                                                    <a href="<?php echo base_url('tin-tuc/'.$item->loaitintuc_slug.'/'.$item->slug); ?>" class="adv-thumb-link">
+                                                        <img src="<?php echo base_url('upload/tintuc/thumb/'.$item->image); ?>" alt="<?php echo $item->title; ?>">
+                                                    </a>
+                                                </div>
+                                                <div class="post-info">
+                                                    <h3 class="title14"><a href="<?php echo base_url('tin-tuc/'.$item->loaitintuc_slug.'/'.$item->slug); ?>"><?php echo $item->title; ?></a></h3>
+                                                    <span class="silver"><?php echo $item->created; ?></span>
+                                                </div>
+                                            </div>
+                                        <?php endforeach ?>
+                                    <?php endif ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End WIdget -->
+                    <div class="widget widget-tags">
+                        <h2 class="title18 title-widget font-bold">Search by Tags</h2>
+                        <ul class="wg-list-tabs list-inline-block">
+                            <li><a href="#">Tomato</a></li>
+                            <li><a href="#">Organic</a></li>
+                            <li><a href="#">Organic Gardening </a></li>
+                            <li><a href="#">Food</a></li>
+                            <li><a href="#">Healthy</a></li>
+                            <li><a href="#">Vegatable</a></li>
+                            <li><a href="#">Natural </a></li>
+                        </ul>
+                    </div>
+                    <!-- End WIdget -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

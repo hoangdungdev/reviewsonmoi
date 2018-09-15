@@ -210,6 +210,46 @@
                 }
             });
         });
+        $("form#form-review-kh").submit(function(e) {
+            e.preventDefault();
+            var name = $("form#form-review-kh [name='name']").val();
+            var email = $("form#form-review-kh [name='email']").val();
+            var rating = $("form#form-review-kh [name='rating']:checked").val();
+            var content = $("form#form-review-kh [name='content']").val();
+            var id_product = $("form#form-review-kh [name='id_product']").val();
+            var name_product = $("form#form-review-kh [name='name_product']").val();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: {
+                    name: name,
+                    email: email,
+                    rating: rating,
+                    content: content,
+                    id_product: id_product,
+                    name_product: name_product
+                },
+                dataType: "json",
+                success: function(e) {
+                    var message_info = $("#review_info");
+                    "000" == e.code ? (
+                        message_info.text(e.message), 
+                        message_info.removeClass("alert-danger"), 
+                        message_info.addClass("alert-success")) : (
+                            message_info.text(e.message), 
+                            message_info.removeClass("alert-success"), 
+                            message_info.addClass("alert-danger")), 
+                        message_info.show().delay(3200).fadeOut(300);
+                        $("form#form-review-kh")[0].reset()
+                },
+                error: function() {
+                    alert("Đã có lỗi xảy ra")
+                },
+                complete: function() {
+                    $("form#form-info-kh [name='email']").val("");
+                }
+            });
+        });
         $('#userInfo').change(function() {
             if($(this).is(":checked")) {
                 $('#fullname').val(userInfo.name);

@@ -42,6 +42,7 @@ $route['default_controller'] = "home/index";
 $route['404_override'] = 'hd';
 $route['lien-he'] = "home/contact";
 $route['nhan-mail'] = "home/recivemail";
+$route['nhan-xet'] = "home/comment";
 $route['danh-muc/(:any)'] = "home/danhmuc/$1";
 $route['tim-kiem'] = "home/timkiem";
 

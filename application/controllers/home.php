@@ -410,16 +410,16 @@ class home extends CI_Controller
 	}
 	function product(){
 		try {
-			$this->data['zcolor'] = $this->input->get('color');
-			$this->data['zsize'] = $this->input->get('size');
-
 			$this->layout->setLayout('home_layout');
 			$slug = $this->uri->segment(2);
+
+			$this->load->model('comment_model');
 
 			$this->data['products_detail'] = $this->product_model->getbyslug($slug);
 			if (!$this->data['products_detail']) {
 				redirect(base_url('hd'));
 			}
+			$this->data['comments'] = $this->comment_model->getlisthome($this->data['products_detail']->id, 0, 50);
 			$parent_id = $this->data['products_detail']->parent_id;
 
 			$this->data['products_lienquan'] = $this->product_model->get_lienquan($parent_id,$this->data['products_detail']->id,0,10);
@@ -755,6 +755,55 @@ class home extends CI_Controller
 				}
 			} else {
 				echo json_encode(['message'=>'Vui lòng nhập đầy đủ.', 'code'=>'0']);
+			}
+		} catch (Exception $e) {
+			echo $e->getMessage(); die();
+		}
+	}
+	function comment(){
+		try {
+			$this->load->model('comment_model');
+			$input = $this->input->post();
+			if($input){
+				$this->form_validation->set_message('required', 'Vui lòng nhập %s');
+				$this->form_validation->set_message('is_natural', '%s không hợp lệ');
+				$this->form_validation->set_message('min_length', '%s phải trên 6 số');
+				$this->form_validation->set_message('valid_email', '%s không hợp lệ');
+				$this->form_validation->set_rules('name', 'Họ tên', 'required|trim');
+				$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
+				$this->form_validation->set_rules('content', 'Nội dung ghi chú', 'required|trim');
+				
+				if($this->form_validation->run()== FALSE){
+					$errors = validation_errors();
+		            echo json_encode(['message'=>'Vui lòng nhập đúng yêu cầu.', 'code'=>'0']);
+				} else {
+					$str_img = null;
+					$trimemail = trim($input['email']);
+					$json = file_get_contents('http://picasaweb.google.com/data/entry/api/user/'.$trimemail.'?alt=json');
+					$obj = json_decode($json);
+					$arr = (array)$obj->entry;
+					$arr_img = (array)$arr['gphoto$thumbnail'];
+					$img = $arr_img['$t'];
+					if (!empty($img)) {
+						$str_img = $img;
+					}
+					$date = date("Y-m-d H:i:s");
+					$this->data['value'] = array('email' => $input['email'],
+												'name' => $input['name'],
+												'rating' => (int)$input['rating'],
+												'content' => $input['content'],
+												'id_product' => (int)$input['id_product'],
+												'name_product' => $input['name_product'],
+												'image' => $str_img,
+												'created' => $date,
+												'modified' => $date,
+												'status' => -1
+					);
+					$insert_id = $this->comment_model->add($this->data['value']);
+					echo json_encode(['message'=>'Cám ơn quý khách đã liên lạc.','code'=>'000']);
+				}
+			} else {
+				echo json_encode(['message'=>'Vui lòng nhập đầy đủ thông tin.', 'code'=>'0']);
 			}
 		} catch (Exception $e) {
 			echo $e->getMessage(); die();
