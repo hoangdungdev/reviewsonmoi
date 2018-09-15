@@ -26,6 +26,7 @@ class home extends CI_Controller
 		$this->data['gioithieus'] = $this->gioithieu_model->getlisthome(0,10);
 		$this->data['tintucs'] = $this->tintuc_model->getlistnoibat(0,6);
 		$this->data['tags'] = $this->tags_model->getlisthome(0,20);
+		$this->data['banchays'] = $this->product_model->get_banchay(0,10);
 	}
 	function index(){
 		try {
@@ -38,7 +39,7 @@ class home extends CI_Controller
 			$this->data['banners_left'] = $this->banner_model->getlistleft();
 			$this->data['banners_right'] = $this->banner_model->getlistright(0,2);
 			$this->data['sliders'] = $this->slider_model->getliststatus('',0,8);
-			$this->data['banchays'] = $this->product_model->get_banchay(0,10);
+			// $this->data['banchays'] = $this->product_model->get_banchay(0,10);
 			$this->data['mois'] = $this->product_model->get_new(0,3);
 
 			$this->layout->view(strtolower(__CLASS__).'/index',$this->data);
