@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
@@ -8,25 +7,16 @@
     <meta name="keywords" content="Perennial,7uptheme" />
     <meta name="robots" content="noodp,index,follow" />
     <meta name='revisit-after' content='1 days' />
-    <title>Perennial | Home Style 3</title>
+    <title>Thuốc mọc mi</title>
     <link href="https://fonts.googleapis.com/css?family=Oswald:400,500,600,700%7cLobster" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/font-awesome.min.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/ionicons.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/jquery.fancybox.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/jquery-ui.min.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/owl.carousel.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/owl.transitions.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/jquery.mCustomScrollbar.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/owl.theme.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/slick.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/animate.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/hover.css"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/color3.css" media="all"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/theme.css" media="all"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/responsive.css" media="all"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/browser.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/libs/ionicons.min.css"/>
+    <style>
+        <?php echo file_get_contents(base_url('public/css/dp.css'));?>
+    </style>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/thememini.css"/>
 </head>
 <body class="preload">
 <div class="wrap">
@@ -187,122 +177,99 @@
 <script src="<?php echo base_url(); ?>public/js/libs/slick.js"></script>
 <script src="<?php echo base_url(); ?>public/js/libs/modernizr.custom.js"></script>
 <script src="<?php echo base_url(); ?>public/js/libs/jquery.hoverdir.js"></script>
-<script src="<?php echo base_url(); ?>public/js/libs/popup.js"></script>
-<script src="<?php echo base_url(); ?>public/js/libs/timecircles.js"></script>
 <script src="<?php echo base_url(); ?>public/js/libs/wow.js"></script>
 <script src="<?php echo base_url(); ?>public/js/theme.js"></script>
 <script>
-            $(document).ready(function() {
-                $("form#form-info-kh").submit(function(e) {
-                    e.preventDefault();
-                    var email = $("form#form-info-kh [name='email']").val();
-                    $.ajax({
-                        type: "POST",
-                        url: $(this).attr("action"),
-                        data: {
-                            email: email
-                        },
-                        dataType: "json",
-                        success: function(e) {
-                            var message_info = $("#message_info");
-                            "000" == e.code ? (
-                                message_info.text(e.message), 
-                                message_info.removeClass("alert-danger"), 
-                                message_info.addClass("alert-success")) : (
-                                    message_info.text(e.message), 
-                                    message_info.removeClass("alert-success"), 
-                                    message_info.addClass("alert-danger")), 
-                                message_info.show().delay(3200).fadeOut(300)
-                        },
-                        error: function() {
-                            alert("Đã có lỗi xảy ra")
-                        },
-                        complete: function() {
-                            $("form#form-info-kh [name='email']").val("");
-                        }
-                    });
-                });
-                $('#userInfo').change(function() {
-                    if($(this).is(":checked")) {
-                        $('#fullname').val(userInfo.name);
-                        $('#phone').val(userInfo.phone);
-                        $('#email').val(userInfo.email);
-                        $('#address').val(userInfo.address);
-                    } else {
-                        $("#formInfo")[0].reset();
-                    }       
-                });
-                $(".colordp").on("click",function(){
-                    var datahref = $("#sp_add").attr('href');
-                    var dataid = $(this).attr("dataid");
-                    if (datahref.indexOf('color=') >= 0) {
-                        datahref = datahref.replace(/\bcolor=[^&#]+/g, "color=" + dataid);
-                    } else {
-                        datahref += "&color="+dataid;
-                    }
-                    $('#sp_add').attr({href: datahref});
-                    var clase = $(this).attr("class");
-                    $("." + clase).removeClass("active");
-                    $(this).addClass("active");
-                    $('.colorid').hide();
-                    $('#colorid_'+dataid).show();
-                });
-                $(".sizedp").on("click",function(){
-                    var datahref = $("#sp_add").attr('href');
-                    var dataid = $(this).attr("dataid");
-                    if (datahref.indexOf('size=') >= 0) {
-                        datahref = datahref.replace(/\bsize=[^&#]+/g, "size=" + dataid);
-                    } else {
-                        datahref += "&size="+dataid;
-                    }
-                    $('#sp_add').attr({href: datahref});
-                    var clase = $(this).attr("class");
-                    $("." + clase).removeClass("active");
-                    $(this).addClass("active");
-                });
-                $('#sp_add').click(function(e) {
-                    e.preventDefault();
-                    var datahref = $(this).attr('href');
-                    if (datahref.indexOf('size=') == -1) {
-                        var size = $('.sizedp.active').attr('dataid');
-                        datahref += "&size="+size;
-                    }
-                    if (datahref.indexOf('color=') == -1) {
-                        var color = $('.colordp.active').attr('dataid');
-                        datahref += "&color="+color;
-                    }
-                    if (datahref.indexOf('qty=') == -1) {
-                        datahref += "&qty="+1;
-                    }
-                    window.location.href = datahref;
-                });
-                $("input[name='payment'][value='1']").click(function(e) {
-                    $('#showbank').show();
-                });
-                $("input[name='payment'][value='0']").click(function(e) {
-                    $('#showbank').hide();
-                });
-            }); 
-            function _quanhuyen(val){
-                $.ajax({
-                    url: '<?php echo base_url("cart/quanhuyen"); ?>',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        pid: val
-                    }
-                }).done(function(result) {
-                    var strResult = '';
-                    if (result.data.length > 0) {
-                        result.data.map(function(item){
-                            strResult += '<option value="'+item.id+'">'+item.name+'</option>';
-                        });
-                    }else{
-                        strResult += '<option value="">Chọn quận/huyện</option>';
-                    }
-                    $('select[name="quanhuyen"]').html(strResult);
-                });
+    $(document).ready(function() {
+        $("form#form-info-kh").submit(function(e) {
+            e.preventDefault();
+            var email = $("form#form-info-kh [name='email']").val();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: {
+                    email: email
+                },
+                dataType: "json",
+                success: function(e) {
+                    var message_info = $("#message_info");
+                    "000" == e.code ? (
+                        message_info.text(e.message), 
+                        message_info.removeClass("alert-danger"), 
+                        message_info.addClass("alert-success")) : (
+                            message_info.text(e.message), 
+                            message_info.removeClass("alert-success"), 
+                            message_info.addClass("alert-danger")), 
+                        message_info.show().delay(3200).fadeOut(300)
+                },
+                error: function() {
+                    alert("Đã có lỗi xảy ra")
+                },
+                complete: function() {
+                    $("form#form-info-kh [name='email']").val("");
+                }
+            });
+        });
+        $('#userInfo').change(function() {
+            if($(this).is(":checked")) {
+                $('#fullname').val(userInfo.name);
+                $('#phone').val(userInfo.phone);
+                $('#email').val(userInfo.email);
+                $('#address').val(userInfo.address);
+            } else {
+                $("#formInfo")[0].reset();
+            }       
+        });
+        // $('#sp_add').click(function(e) {
+        //     e.preventDefault();
+        //     var datahref = $(this).attr('href');
+        //     if (datahref.indexOf('size=') == -1) {
+        //         var size = $('.sizedp.active').attr('dataid');
+        //         datahref += "&size="+size;
+        //     }
+        //     if (datahref.indexOf('color=') == -1) {
+        //         var color = $('.colordp.active').attr('dataid');
+        //         datahref += "&color="+color;
+        //     }
+        //     if (datahref.indexOf('qty=') == -1) {
+        //         datahref += "&qty="+1;
+        //     }
+        //     window.location.href = datahref;
+        // });
+        $("input[name='payment'][value='1']").click(function(e) {
+            $('#showbank').show();
+        });
+        $("input[name='payment'][value='0']").click(function(e) {
+            $('#showbank').hide();
+        });
+    }); 
+    function _quanhuyen(val){
+        $.ajax({
+            url: '<?php echo base_url("cart/quanhuyen"); ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                pid: val
             }
-        </script>
+        }).done(function(result) {
+            var strResult = '';
+            if (result.data.length > 0) {
+                result.data.map(function(item){
+                    strResult += '<option value="'+item.id+'">'+item.name+'</option>';
+                });
+            }else{
+                strResult += '<option value="">Chọn quận/huyện</option>';
+            }
+            $('select[name="quanhuyen"]').html(strResult);
+        });
+    }
+</script>
+<div class="hotline">
+    <div id="phonering-alo-phoneIcon" class="phonering-alo-phone phonering-alo-green phonering-alo-show">
+        <div class="phonering-alo-ph-circle"></div>
+        <div class="phonering-alo-ph-circle-fill"></div>
+        <div class="phonering-alo-ph-img-circle"><a class="pps-btn-img" title="Liên hệ qua số điện thoại" href="tel:<?php echo str_replace('.','', $config['site_hotline']); ?>"><img src="<?php echo base_url('public/images/phone.png') ?>" alt="Liên hệ" width="50" class="img-responsive"/></a></div>
+    </div>
+</div>
 </body>
 </html>

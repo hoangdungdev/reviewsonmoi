@@ -26,7 +26,7 @@ class home extends CI_Controller
 		$this->data['gioithieus'] = $this->gioithieu_model->getlisthome(0,10);
 		$this->data['tintucs'] = $this->tintuc_model->getlistnoibat(0,6);
 		$this->data['tags'] = $this->tags_model->getlisthome(0,20);
-		$this->data['banchays'] = $this->product_model->get_banchay(0,10);
+		$this->data['banchays'] = $this->product_model->get_noibat(0,10);
 	}
 	function index(){
 		try {
@@ -39,7 +39,6 @@ class home extends CI_Controller
 			$this->data['banners_left'] = $this->banner_model->getlistleft();
 			$this->data['banners_right'] = $this->banner_model->getlistright(0,2);
 			$this->data['sliders'] = $this->slider_model->getliststatus('',0,8);
-			// $this->data['banchays'] = $this->product_model->get_banchay(0,10);
 			$this->data['mois'] = $this->product_model->get_new(0,3);
 
 			$this->layout->view(strtolower(__CLASS__).'/index',$this->data);
@@ -416,14 +415,11 @@ class home extends CI_Controller
 
 			$this->layout->setLayout('home_layout');
 			$slug = $this->uri->segment(2);
-			$this->load->model('mausac_model');
-			$this->load->model('size_model');
+
 			$this->data['products_detail'] = $this->product_model->getbyslug($slug);
 			if (!$this->data['products_detail']) {
 				redirect(base_url('hd'));
 			}
-			$this->data['mausacs'] = $this->mausac_model->getlisthome(0,20);
-			$this->data['sizes'] = $this->size_model->getlisthome(0,20);
 			$parent_id = $this->data['products_detail']->parent_id;
 
 			$this->data['products_lienquan'] = $this->product_model->get_lienquan($parent_id,$this->data['products_detail']->id,0,10);
@@ -763,5 +759,9 @@ class home extends CI_Controller
 		} catch (Exception $e) {
 			echo $e->getMessage(); die();
 		}
+	}
+	function css() {
+		$this->layout->setLayout('home_layout');
+		$this->layout->view(strtolower(__CLASS__).'/css',$this->data);
 	}
 }

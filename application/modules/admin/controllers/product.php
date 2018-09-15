@@ -23,8 +23,6 @@ class Product extends CI_Controller
 			$this->load->model('category_model');
 
 			$this->load->model('product_model');
-			$this->load->model('mausac_model');
-			$this->load->model('size_model');
 			$this->data['auth'] = $auth;
 
 			$this->data['controller'] = strtolower(__CLASS__);
@@ -108,8 +106,6 @@ class Product extends CI_Controller
 			$this->data['action'] = strtolower(__FUNCTION__);
 
 			$this->data['categories'] = $this->category_model->getmenu();
-			$this->data['mausacs'] = $this->mausac_model->getlisthome(0,20);
-			$this->data['sizes'] = $this->size_model->getlisthome(0,20);
 			$input = $this->input->post();
 
 			//------------------
@@ -156,13 +152,6 @@ class Product extends CI_Controller
 												'status' => '1'
 
 					);
-					
-					$str_mausac = implode(",", $input['mausac']);
-					
-					
-
-
-					$str_size = implode(",", $input['size']);
 
 					$this->data['value'] = array('name' => $input['name'],
 												'slug' => $slug,
@@ -181,9 +170,6 @@ class Product extends CI_Controller
 												'order' => $input['order'],
 
 												'sale' => $input['sale'],
-												'mausac' => $str_mausac,
-												'size' => $str_size,
-
 												'noibat' => $input['noibat'],
 
 												'created' => $date,
@@ -212,48 +198,26 @@ class Product extends CI_Controller
 								mkdir($config['upload_path']);
 								mkdir($config['upload_path'].'/thumb');								
 							}
-
 							$config['allowed_types'] = 'gif|jpg|png|jpeg';
 							$config['encrypt_name'] = FALSE;
 							$this->load->library('upload', $config);
 							$this->upload->initialize($config);
-
 							//-------- upload file -----------
-
 							$upload_data = null;
-
 							if (!$this->upload->do_upload('product-image')){
-
 								$this->data['error'] = $this->upload->display_errors();
-
 							} else {
-
 								$upload_data =  $this->upload->data();
-							//------------------------ watermarking ------------------------------	
 								$this->data['value']['image'] = $upload_data['file_name'];
-
-								//-------- resize image and create thumbnail -----------
-
 								$this->load->library('image_lib');
-
-								$iconfig['image_library'] = 'GD2'; //i also wrote GD/gd2
-
+								$iconfig['image_library'] = 'GD2';
 								$iconfig['maintain_ratio'] = TRUE;
-
-							//	$iconfig['width']     = 140;
-
-							//	$iconfig['height']    = 120;
-
 								$iconfig['source_image']= $upload_data['full_path'];
-
 								$iconfig['new_image']= $config['upload_path'];
-
 								$this->image_lib->initialize($iconfig);
-
 								if ( !$this->image_lib->resize()){
 									$this->data['error'] = $this->upload->display_errors();
 								}
-
 								$iconfig['create_thumb'] = TRUE;
 								$iconfig['width']     = 300;
 								$iconfig['height']    = 400;
@@ -263,11 +227,52 @@ class Product extends CI_Controller
 									$this->data['error'] = $this->upload->display_errors();
 								}
 							}
-
 							if(!empty($this->data['error'])){
 								$this->layout->view(strtolower(__CLASS__).'/modify',$this->data);
 							} else {
 								$this->product_model->update($insert_id, array('image' => $upload_data['file_name']));
+							}
+
+						}
+						if($_FILES['product-image-hover']['name']){
+							$config['upload_path'] = 'upload/product/hover/';
+							if (!file_exists($config['upload_path'])) {
+								mkdir($config['upload_path']);
+								mkdir($config['upload_path'].'/thumb');								
+							}
+							$config['allowed_types'] = 'gif|jpg|png|jpeg';
+							$config['encrypt_name'] = FALSE;
+							$this->load->library('upload', $config);
+							$this->upload->initialize($config);
+							//-------- upload file -----------
+							$upload_data = null;
+							if (!$this->upload->do_upload('product-image-hover')){
+								$this->data['error'] = $this->upload->display_errors();
+							} else {
+								$upload_data =  $this->upload->data();
+								$this->data['value']['image'] = $upload_data['file_name'];
+								$this->load->library('image_lib');
+								$iconfig['image_library'] = 'GD2';
+								$iconfig['maintain_ratio'] = TRUE;
+								$iconfig['source_image']= $upload_data['full_path'];
+								$iconfig['new_image']= $config['upload_path'];
+								$this->image_lib->initialize($iconfig);
+								if ( !$this->image_lib->resize()){
+									$this->data['error'] = $this->upload->display_errors();
+								}
+								$iconfig['create_thumb'] = TRUE;
+								$iconfig['width']     = 300;
+								$iconfig['height']    = 400;
+								$iconfig['new_image'] = $config['upload_path']."/thumb";
+								$this->image_lib->initialize($iconfig);
+								if ( ! $this->image_lib->resize()){
+									$this->data['error'] = $this->upload->display_errors();
+								}
+							}
+							if(!empty($this->data['error'])){
+								$this->layout->view(strtolower(__CLASS__).'/modify',$this->data);
+							} else {
+								$this->product_model->update($insert_id, array('image2' => $upload_data['file_name']));
 							}
 
 						}
@@ -278,7 +283,6 @@ class Product extends CI_Controller
 							if (!file_exists($config['upload_path'])) {
 								mkdir($config['upload_path']);
 								mkdir($config['upload_path'].'/min');
-								mkdir($config['upload_path'].'/medium');
 							}
 							$config['allowed_types'] = 'gif|jpg|png|jpeg';
 							$config['encrypt_name'] = FALSE;
@@ -296,26 +300,6 @@ class Product extends CI_Controller
 								if (!$this->upload->do_upload()){
 									$this->data['error'] = $this->upload->display_errors();
 								} else {
-									$upload_data =  $this->upload->data();
-									// thumbnail
-									$this->load->library('image_lib');
-									$iconfig['image_library'] = 'GD2'; //i also wrote GD/gd2
-									$iconfig['maintain_ratio'] = TRUE;
-									$iconfig['source_image']= $upload_data['full_path'];
-									$iconfig['width']     = 600;
-									$iconfig['height']    = 800;
-									$iconfig['new_image'] = $config['upload_path']."/medium/";
-									$this->image_lib->initialize($iconfig);
-									if ( ! $this->image_lib->resize())
-									{
-										$this->data['error'] = $this->upload->display_errors();
-									}
-									$this->image_lib->initialize($iconfig);
-									if ( ! $this->image_lib->resize()){
-										$this->data['error'] = $this->upload->display_errors();
-									}									
-									$this->image_lib->clear();
-									//-------------------------------------------------------//
 									$upload_data =  $this->upload->data();
 									// thumbnail
 									$this->load->library('image_lib');
@@ -346,57 +330,7 @@ class Product extends CI_Controller
 								$this->product_model->update($insert_id,array('list_img' => json_encode($images)));
 							}
 						}
-
-						//----------- Images Upload ----------
-						$images_color = array();
-						foreach ($input['mausac'] as $value) {
-							if($_FILES['upload_file_'.$value]['name'][0]){
-								$config['upload_path'] = './upload/product/color/';
-								if (!file_exists($config['upload_path'])) {
-									mkdir($config['upload_path']);
-									mkdir($config['upload_path'].'/medium');
-								}
-								$config['allowed_types'] = 'gif|jpg|png|jpeg';
-								$config['encrypt_name'] = FALSE;
-								$this->load->library('upload', $config);
-								$this->upload->initialize($config);
-								$upload_data = null;
-								$images_color_item = array();
-								for($i=0;$i<count($_FILES['upload_file_'.$value]['name']); $i++){
-									$_FILES['userfile']['name']    = time().$_FILES['upload_file_'.$value]['name'][$i];
-									$_FILES['userfile']['type']    = $_FILES['upload_file_'.$value]['type'][$i];
-									$_FILES['userfile']['tmp_name']= $_FILES['upload_file_'.$value]['tmp_name'][$i];
-									$_FILES['userfile']['error']   = $_FILES['upload_file_'.$value]['error'][$i];
-									$_FILES['userfile']['size']    = $_FILES['upload_file_'.$value]['size'][$i];
-									if (!$this->upload->do_upload()){
-										$this->data['error'] = $this->upload->display_errors();
-									} else {
-										$upload_data =  $this->upload->data();
-										// thumbnail
-										$this->load->library('image_lib');
-										$iconfig['image_library'] = 'GD2'; //i also wrote GD/gd2
-										$iconfig['maintain_ratio'] = TRUE;
-										$iconfig['source_image']= $upload_data['full_path'];
-										$iconfig['width']     = 600;
-										$iconfig['height']    = 800;
-										$iconfig['new_image'] = $config['upload_path']."/medium/";
-										$this->image_lib->initialize($iconfig);
-										if ( ! $this->image_lib->resize())
-										{
-											$this->data['error'] = $this->upload->display_errors();
-										}						
-										array_push($images_color_item,$upload_data['file_name']);
-										$this->image_lib->clear();
-									}
-								}
-								array_push($images_color,array($value => $images_color_item));
-							}
-						}
-						if(!empty($this->data['error'])){
-							$this->layout->view(strtolower(__CLASS__).'/modify',$this->data);
-						} else {
-							$this->product_model->update($insert_id,array('listmausac' => serialize($images_color)));
-						}
+						
 						// ---------- end Images Upload ------------------
 					if(empty($this->data['error'])) redirect($this->data['module'].'/'.strtolower(__CLASS__)."?update=add");
 					// -------- end Image Upload -----------
@@ -501,13 +435,6 @@ class Product extends CI_Controller
 				$this->data['action'] = strtolower(__FUNCTION__);
 
 				$this->data['product'] = $this->product_model->getbyid($id);
-				$this->data['mausacs'] = $this->mausac_model->getlisthome(0,20);
-				$this->data['mausac_product'] = explode(",",$this->data['product']->mausac);
-
-				$this->data['sizes'] = $this->size_model->getlisthome(0,20);
-				$this->data['size_product'] = explode(",",$this->data['product']->size);
-
-				//var_dump(json_decode($this->data['product']->params));die;
 
 				$this->data['categories'] = $this->category_model->getmenu();
 
@@ -540,8 +467,6 @@ class Product extends CI_Controller
 					} else {
 
 						$date = date("Y-m-d H:i:s");
-						$str_mausac = implode(",", $input['mausac']);
-						$str_size = implode(",", $input['size']);
 						$this->data['value'] = array('name' => $input['name'],
 
 													'code' => $input['code'],
@@ -554,9 +479,7 @@ class Product extends CI_Controller
 
 													'price' => $input['price'],
 
-													'rating' => $input['rating'],													
-													'mausac' => $str_mausac,
-													'size' => $str_size,
+													'rating' => $input['rating'],	
 													'sale' => $input['sale'],
 													'content' => $input['content'],
 													'modified' => $date,
@@ -580,70 +503,104 @@ class Product extends CI_Controller
 						// -------- Image Upload -----------
 
 						if($_FILES['product-image']['name']){
+                            $config['upload_path'] = './upload/product/home/';
+                            if (!file_exists($config['upload_path'])) {
+                                mkdir($config['upload_path']);
+                                mkdir($config['upload_path'].'/thumb');                                
+                            }
 
-							$config['upload_path'] = './upload/product/home/';
-							if (!file_exists($config['upload_path'])) {
-								mkdir($config['upload_path']);
-								mkdir($config['upload_path'].'/thumb');								
-							}
+                            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                            $config['encrypt_name'] = FALSE;
+                            $this->load->library('upload', $config);
+                            $this->upload->initialize($config);
+                            //-------- upload file -----------
+                            $upload_data = null;
+                            if (!$this->upload->do_upload('product-image')){
+                                $this->data['error'] = $this->upload->display_errors();
+                            } else {
+                                $upload_data =  $this->upload->data();
+                                $this->data['value']['image'] = $upload_data['file_name'];
+                                //-------- resize image and create thumbnail -----------
+                                $this->load->library('image_lib');
 
-							$config['allowed_types'] = 'gif|jpg|png|jpeg';
-							$config['encrypt_name'] = FALSE;
-							$this->load->library('upload', $config);
-							$this->upload->initialize($config);
-							//-------- upload file -----------
-							$upload_data = null;
-							if (!$this->upload->do_upload('product-image')){
-								$this->data['error'] = $this->upload->display_errors();
-							} else {
-								$upload_data =  $this->upload->data();
-								$this->data['value']['image'] = $upload_data['file_name'];
-								//-------- resize image and create thumbnail -----------
-								$this->load->library('image_lib');
+                                $iconfig['image_library'] = 'GD2'; //i also wrote GD/gd2
 
-								$iconfig['image_library'] = 'GD2'; //i also wrote GD/gd2
+                                $iconfig['maintain_ratio'] = TRUE;
+                                $iconfig['source_image']= $upload_data['full_path'];
 
-								$iconfig['maintain_ratio'] = TRUE;
-								$iconfig['source_image']= $upload_data['full_path'];
+                                $iconfig['new_image']= $config['upload_path'];
 
-								$iconfig['new_image']= $config['upload_path'];
+                                $this->image_lib->initialize($iconfig);
 
-								$this->image_lib->initialize($iconfig);
+                                if ( !$this->image_lib->resize()) {
+                                    $this->data['error'] = $this->upload->display_errors();
+                                }
+                                $iconfig['create_thumb'] = TRUE;
+                                $iconfig['width']     = 300;
+                                $iconfig['height']    = 400;
+                                $iconfig['new_image'] = $config['upload_path']."/thumb";
+                                $this->image_lib->initialize($iconfig);
 
-								if ( !$this->image_lib->resize())
+                                if ( ! $this->image_lib->resize()) {
+                                    $this->data['error'] = $this->upload->display_errors();
+                                }
+                            }
+                            if(!empty($this->data['error'])){
+                                $this->layout->view(strtolower(__CLASS__).'/modify',$this->data);
+                            } else {
+                                $this->product_model->update($insert_id, array('image' => $upload_data['file_name']));
+                            }
+                        }
 
-								{
+                        if($_FILES['product-image-hover']['name']){
+                            $config['upload_path'] = './upload/product/hover/';
+                            if (!file_exists($config['upload_path'])) {
+                                mkdir($config['upload_path']);
+                                mkdir($config['upload_path'].'/thumb');                                
+                            }
 
-									$this->data['error'] = $this->upload->display_errors();
+                            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                            $config['encrypt_name'] = FALSE;
+                            $this->load->library('upload', $config);
+                            $this->upload->initialize($config);
+                            //-------- upload file -----------
+                            $upload_data = null;
+                            if (!$this->upload->do_upload('product-image-hover')){
+                                $this->data['error'] = $this->upload->display_errors();
+                            } else {
+                                $upload_data =  $this->upload->data();
+                                $this->data['value']['image'] = $upload_data['file_name'];
+                                //-------- resize image and create thumbnail -----------
+                                $this->load->library('image_lib');
 
-								}
-								$iconfig['create_thumb'] = TRUE;
-								$iconfig['width']     = 300;
-								$iconfig['height']    = 400;
-								$iconfig['new_image'] = $config['upload_path']."/thumb";
-								$this->image_lib->initialize($iconfig);
+                                $iconfig['image_library'] = 'GD2'; //i also wrote GD/gd2
 
-								if ( ! $this->image_lib->resize())
+                                $iconfig['maintain_ratio'] = TRUE;
+                                $iconfig['source_image']= $upload_data['full_path'];
 
-								{
+                                $iconfig['new_image']= $config['upload_path'];
 
-									$this->data['error'] = $this->upload->display_errors();
+                                $this->image_lib->initialize($iconfig);
 
-								}
+                                if ( !$this->image_lib->resize()) {
+                                    $this->data['error'] = $this->upload->display_errors();
+                                }
+                                $iconfig['create_thumb'] = TRUE;
+                                $iconfig['width']     = 300;
+                                $iconfig['height']    = 400;
+                                $iconfig['new_image'] = $config['upload_path']."/thumb";
+                                $this->image_lib->initialize($iconfig);
 
-							}
-
-							if(!empty($this->data['error'])){
-
-								$this->layout->view(strtolower(__CLASS__).'/modify',$this->data);
-
-							} else {
-								$this->product_model->update($insert_id, array('image' => $upload_data['file_name']));
-
-							}
-
-						}
-
+                                if ( ! $this->image_lib->resize()) {
+                                    $this->data['error'] = $this->upload->display_errors();
+                                }
+                            }
+                            if(!empty($this->data['error'])){
+                                $this->layout->view(strtolower(__CLASS__).'/modify',$this->data);
+                            } else {
+                                $this->product_model->update($insert_id, array('image2' => $upload_data['file_name']));
+                            }
+                        }
 						//----------- Images Upload ----------
 
 						if($_FILES['image-upload']['name'][0]){
@@ -653,7 +610,6 @@ class Product extends CI_Controller
 							if (!file_exists($config['upload_path'])) {
 								mkdir($config['upload_path']);
 								mkdir($config['upload_path'].'/min');
-								mkdir($config['upload_path'].'/medium');
 							}
 
 							$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -690,32 +646,6 @@ class Product extends CI_Controller
 
 								} else {
 
-									$upload_data =  $this->upload->data();
-									// thumbnail
-
-									$this->load->library('image_lib');
-
-									$iconfig['image_library'] = 'GD2'; //i also wrote GD/gd2
-
-									$iconfig['maintain_ratio'] = TRUE;
-
-									$iconfig['source_image']= $upload_data['full_path'];
-
-									$iconfig['width']     = 600;
-									$iconfig['height']    = 800;
-
-									$iconfig['new_image'] = $config['upload_path']."/medium/";
-
-									$this->image_lib->initialize($iconfig);
-
-									if ( ! $this->image_lib->resize()){
-										$this->data['error'] = $this->upload->display_errors();
-									}
-
-									
-
-									$this->image_lib->clear();
-									//-------------------------------------------------------//
 									$upload_data =  $this->upload->data();
 									// thumbnail
 									$this->load->library('image_lib');

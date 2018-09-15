@@ -444,7 +444,7 @@ class Product_model extends CI_Model{
 		$this->db->where('product.status', 1);
 		$this->db->where('product.banchay !=', 1);
 
-		$this->db->order_by('product.order desc, product.created desc');
+		$this->db->order_by('product.order asc, product.created desc');
 
 		$this->db->join('category','product.parent_id = category.id','left');
 

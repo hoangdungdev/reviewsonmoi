@@ -109,8 +109,6 @@
 							<li><a href="<?php echo site_url();?>dpadmin/product/add">Thêm mới</a></li>
 							<li><a href="<?php echo site_url();?>dpadmin/product">Danh sách</a></li>
 							<li class="current"><a href="<?php echo site_url();?>dpadmin/category">Danh mục</a></li>
-							<li class="current"><a href="<?php echo site_url();?>dpadmin/mausac">Màu sắc</a></li>
-							<li class="current"><a href="<?php echo site_url();?>dpadmin/size">Kích thước</a></li>
 						</ul>
 					</li>
 					<li class="menu-top">

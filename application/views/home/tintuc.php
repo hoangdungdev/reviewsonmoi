@@ -44,6 +44,40 @@
                         </div>
                     </div>
                 </div>
+                <div class="widget widget-new-product">
+                    <h2 class="title18 title-widget font-bold">New Arrivals</h2>
+                    <div class="wg-product-slider">
+                        <div class="wrap-item group-navi" data-pagination="false" data-navigation="true" data-itemscustom="[[0,1],[560,2],[768,1]]">
+                            <div class="item">
+                                <?php if (count($banchays) > 0): ?>
+                                    <?php foreach ($banchays as $item): ?>
+                                        <div class="item-wg-product table">
+                                            <div class="product-thumb">
+                                                <a href="<?php echo base_url('san-pham/'.$item->slug); ?>" class="product-thumb-link zoom-thumb">
+                                                    <img src="<?php echo base_url('upload/product/home/thumb/'.$item->image); ?>" alt="<?php echo $item->name; ?>">
+                                                </a>
+                                            </div>
+                                            <div class="product-info">
+                                                <h3 class="product-title"><a href="<?php echo base_url('san-pham/'.$item->slug); ?>"><?php echo $item->name; ?></a></h3>
+                                                <div class="product-price">
+                                                    <?php if ($item->sale == 1) { ?>
+                                                        <del class="silver"><span><?php echo $this->cart->format_number_custom($item->price); ?> đ</span></del>
+                                                        <ins class="color"><span><?php echo $this->cart->format_number_custom($item->price_sale); ?> đ</span></ins>
+                                                    <?php } else { ?>    
+                                                        <ins class="color"><span><?php echo $this->cart->format_number_custom($item->price); ?> đ</span></ins>
+                                                    <?php } ?>
+                                                </div>
+                                                <div class="product-rate">
+                                                    <div class="product-rating" style="width:100%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach ?>
+                                <?php endif ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </aside>
         </div>
         <div class="col-md-9 col-sm-8 col-xs-12">

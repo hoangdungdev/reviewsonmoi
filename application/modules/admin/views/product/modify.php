@@ -1,18 +1,4 @@
 <link href="<?php echo base_url()?>/media/css/sz-galery.css"	rel="stylesheet"/>
-<style>
-.mausac {
-    border: 1px solid #cdcdcd;
-    padding: 5px;
-    display: block;
-    background-size: 25px 25px;
-    margin-top: 1px;
-    height: auto;
-    clear: both;
-    overflow: hidden;
-}
-.img_color {margin-left: 50px;}
-.img_up{width: 150px; height: 100px; border: 1px solid #cdcdcd; margin-right: 1px; float: left;}
-</style>
 <script type="text/javascript"	src="<?php echo base_url();?>media/js/jquery.mousewheel.js"></script>
 <script type="text/javascript"	src="<?php echo base_url();?>media/tiny_mce/tiny_mce.js"></script>
 <link href="<?php echo base_url()?>media/css/jquery.fancybox.css"	rel="stylesheet"/>
@@ -86,41 +72,7 @@ tinyMCE.init({
 				}
 			});
 		})
-		$('.chkcolor').click(function(event) {
-			$id = $(this).val();
-			if ($(this).is(':checked')) {
-				$('#upload_file_'+$id).show();
-			} else {
-				$('#upload_file_'+$id).hide();
-			}
-		});
 	});
-	// function openFile(file) {
-	//     var extension = file.substr( (file.lastIndexOf('.') +1) );
-	//     switch(extension) {
-	//         case 'jpg':
-	//         case 'png':
-	//         case 'gif':
-	//             return true;  
-	//         break;    
-	//         default:
-	//             return false;
-	//     }
-	// };
-
-	function preview_image(id) {
-	//  	var total_file = document.getElementById("upload_file_"+id).files.length;
-	//  	$('#image_preview_'+id).html('');
-	// 	for(var i=0; i<total_file; i++) {
-	// 		if (openFile(event.target.files[i].name)) {
-	// 			$('#image_preview_'+id).append("<img src='"+URL.createObjectURL(event.target.files[i])+"' class='img_up'>");
-	// 		} else {
-	// 			$('#image_preview_'+id).html('');
-	// 			document.getElementById("upload_file_"+id).value = null;
-	// 			alert("Vui lòng up file là hình ảnh?");
-	// 		}
-	// 	}
-	}
 </script>
 <h2 class="fl">
 	<?php if ($action == 'edit') echo 'Edit'; else echo 'Add New';?> Sản phẩm
@@ -211,49 +163,21 @@ tinyMCE.init({
 				</td>
 			</tr>
 			<tr>
-				<th><label for="id_mau">Màu sắc</label></th>
-				<td>
-					<?php if (count($mausacs)>0): ?>
-						<?php 
-							foreach ($mausacs as $i => $item) { ?>
-							<div class="mausac" style="background: url(<?php echo base_url('upload/mausac/thumb/'.$item->image); ?>) no-repeat 25px center; background-size: 25px 25px;">
-								<input type="checkbox" class="chkcolor" name="mausac[]" <?php echo (in_array($item->id, $mausac_product))?'checked':''; ?> value="<?php echo $item->id; ?>">
-								<input type="file" class='img_color' id="upload_file_<?php echo $item->id; ?>" name="upload_file_<?php echo $item->id; ?>[]" onchange="preview_image(<?php echo $item->id; ?>);" multiple style="display: none;"/>	
-								<div id="image_preview_<?php echo $item->id; ?>"></div>
-							</div>
-						<?php	
-							}
-						?>
-					<?php endif ?>
-				</td>
-			</tr>
-			<tr>
-				<th><label for="id_size">Kích thước</label></th>
-				<td>
-					<?php if (count($sizes)>0): ?>
-						<?php 
-							foreach ($sizes as $i => $item) { ?>
-								<input type="checkbox" name="size[]" <?php echo (in_array($item->id, $size_product))?'checked':''; ?> value="<?php echo $item->id; ?>"> <?php echo $item->title; ?>
-						<?php	
-							}
-						?>
-					<?php endif ?>
-				</td>
-			</tr>
-			<!-- <tr>
-				<th><label for="product-image">Hình ảnh AAA</label></th>
-				<td>
-					<input type="file" id="upload_file" name="upload_file[]" onchange="preview_image();" multiple style="display: none;" />
-					<div id="image_preview"></div>
-				</td>
-			</tr> -->
-			<tr>
 				<th><label for="product-image">Hình ảnh đại diện</label></th>
 				<td>
 					<?php if(isset($product) && !empty($product->image)):?>
 						<img width="150" src="<?php echo base_url(); ?>upload/product/home/thumb/<?php echo $product->image;?>" /><br/>
 					<?php endif;?>
 					<input type="file" class="regular-text" value="" id="product-image" name="product-image"><br/>					<p class="description">Kích thước trung bình: 600 x 800 </p>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="product-image-hover">Hình ảnh đại diện Hover</label></th>
+				<td>
+					<?php if(isset($product) && !empty($product->image)):?>
+						<img width="150" src="<?php echo base_url(); ?>upload/product/hover/thumb/<?php echo $product->image2;?>" /><br/>
+					<?php endif;?>
+					<input type="file" class="regular-text" value="" id="product-image-hover" name="product-image-hover"><br/>					<p class="description">Kích thước trung bình: 600 x 800 </p>
 				</td>
 			</tr>
 			<tr>
@@ -268,8 +192,8 @@ tinyMCE.init({
 								<ul>
 									<?php foreach(json_decode($product->list_img) as $row):?>
 									<li>
-										<a href="<?php echo base_url();?>upload/product/show/medium/<?php echo $row?>">
-											<img src="<?php echo base_url();?>upload/product/show/medium/<?php echo $row?>">
+										<a href="<?php echo base_url();?>upload/product/show/min/<?php echo $row?>">
+											<img src="<?php echo base_url();?>upload/product/show/min/<?php echo $row?>">
 										</a>
 									</li>
 									<?php endforeach;?>
