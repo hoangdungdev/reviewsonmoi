@@ -797,7 +797,7 @@ class home extends CI_Controller
 												'image' => $str_img,
 												'created' => $date,
 												'modified' => $date,
-												'status' => -1
+												'status' => 0
 					);
 					$insert_id = $this->comment_model->add($this->data['value']);
 					echo json_encode(['message'=>'Cám ơn quý khách đã liên lạc.','code'=>'000']);
